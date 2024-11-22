@@ -30,6 +30,12 @@ class Voo (BaseModel):
         id_aeronave: int
         status:str
 
+def verificar_csv():
+    if not os.path.exists(CSV_FILE):
+        with open(CSV_FILE, "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(HEADER)
+
 @app.post("/voos/")
 def inserir_voo(voo: Voo):
         file_exists = os.path.isfile(CSV_FILE)
