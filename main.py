@@ -53,6 +53,84 @@ def inserir_voo(voo: Voo):
                 raise HTTPException(status_code=500, detail=f"Erro ao salvar dados: {e}")  
         return {"message": "Voo inserido com sucesso!"}
 
+# Funcionalidade 2
+@app.get("/voos/")
+def listar_voos():
+    verificar_csv()
+    try:
+        with open(CSV_FILE, "r") as file:
+            reader = csv.DictReader(file)
+            voos = [row for row in reader]
+        return voos
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao listar voos: {e}")
+
+# Funcionalidade 3 (CRUD completo)
+@app.get("/voos/{id_voo}")
+def obter_voo(id_voo: int):
+    verificar_csv()
+    try:
+        with open(CSV_FILE, "r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if int(row["id_voo"]) == id_voo:
+                    return row
+        raise HTTPException(status_code=404, detail="Voo não encontrado.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao buscar voo: {e}")
+
+@app.put("/voos/{id_voo}")
+def atualizar_voo(id_voo: int, voo_atualizado: Voo):
+    verificar_csv()
+    try:
+        atualizado = False
+        voos = []
+        with open(CSV_FILE, "r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if int(row["id_voo"]) == id_voo:
+                    voos.append(voo_atualizado.dict())
+                    atualizado = True
+                else:
+                    voos.append(row)
+
+        if not atualizado:
+            raise HTTPException(status_code=404, detail="Voo não encontrado.")
+
+        with open(CSV_FILE, "w", newline="") as file:
+            writer = csv.DictWriter(file, fieldnames=HEADER)
+            writer.writeheader()
+            writer.writerows(voos)
+
+        return {"message": "Voo atualizado com sucesso!"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao atualizar voo: {e}")
+
+@app.delete("/voos/{id_voo}")
+def deletar_voo(id_voo: int):
+    verificar_csv()
+    try:
+        voos = []
+        deletado = False
+        with open(CSV_FILE, "r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if int(row["id_voo"]) == id_voo:
+                    deletado = True
+                else:
+                    voos.append(row)
+
+        if not deletado:
+            raise HTTPException(status_code=404, detail="Voo não encontrado.")
+
+        with open(CSV_FILE, "w", newline="") as file:
+            writer = csv.DictWriter(file, fieldnames=HEADER)
+            writer.writeheader()
+            writer.writerows(voos)
+
+        return {"message": "Voo deletado com sucesso!"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao deletar voo: {e}")
         
 @app.get("/contar_registros")
 def contar_registros():
