@@ -54,7 +54,7 @@ def inserir_voo(voo: Voo):
         return {"message": "Voo inserido com sucesso!"}
 
         
-@app.get("/count-entities")
+@app.get("/contar_registros")
 def contar_registros():
         try:
                file = open(CSV_FILE, mode="r")
