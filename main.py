@@ -15,15 +15,19 @@ def read_root():
 
 CSV_FILE = "voos.csv"
 
+header = ["id_voo", "numero_voo", "cia", "origem", 
+          "destino", "horario_partida", "horario_chegada", 
+          "id_aeronave", "status"]
+
 class Voo (BaseModel):
         id_voo: int
         numero_voo: int
+        cia: str
         origem: str
         destino:str
         horario_partida: datetime
         horario_chegada: datetime
         id_aeronave: int
-        id_piloto: int
         status:str
 
 @app.post("/voos/")
@@ -35,19 +39,32 @@ def inserir_voo(voo: Voo):
                       writer = csv.writer(file)
 
                       if not file_exists:
-                            writer.writerow(["id_voo", "numero_voo", "origem", 
+                            writer.writerow(["id_voo", "numero_voo", "cia" "origem", 
                                              "destino","horario_partida", "horario_chegada",
-                                              "id_aeronave", "id_piloto", "status"
+                                              "id_aeronave", "status"
                             ])
                         
                       writer.writerow([
-                             voo.id_voo, voo.numero_voo,  voo.origem,  
+                             voo.id_voo, voo.numero_voo, voo.cia,  voo.origem,  
                              voo.destino, voo.horario_partida, voo.horario_chegada, 
-                             voo.id_aeronave,  voo.id_piloto,  voo.status
+                             voo.id_aeronave,  voo.status
                       ])
         except Exception as e:
                 raise HTTPException(status_code=500, detail=f"Erro ao salvar dados: {e}")  
         return {"message": "Voo inserido com sucesso!"}
 
         
+@app.get("/count-entities")
+def contar_registros():
+        try:
+               file = open(CSV_FILE, mode="r")
+               reader = csv.reader(file)
+               next(reader)
+               count = sum(1 for line in reader)
+               return {"Total de Registros": count}
+        except FileNotFoundError:
+                return {"error": "Arquivo CSV não encontrado."}
+        except Exception as e:
+                return {"error": f"Erro ao contar registros: {str(e)}"}
+                file.close()
 
