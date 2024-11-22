@@ -1,21 +1,16 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from typing import Optional
 import csv
 import os
-import zipfile
 import hashlib
 from datetime import datetime
 
-
 app = FastAPI()
-
-@app.get("/")
-def read_root():
-    return {"message": "Serviço de Gerenciamento de Voos"}
 
 CSV_FILE = "voos.csv"
 
-header = ["id_voo", "numero_voo", "cia", "origem", 
+header = ["id_voo ", "numero_voo ", "cia ", "origem ", 
           "destino", "horario_partida", "horario_chegada", 
           "id_aeronave", "status"]
 
@@ -34,8 +29,9 @@ def verificar_csv():
     if not os.path.exists(CSV_FILE):
         with open(CSV_FILE, "w", newline="") as file:
             writer = csv.writer(file)
-            writer.writerow(HEADER)
 
+            writer.writerow(header)
+s
 @app.post("/voos/")
 def inserir_voo(voo: Voo):
         file_exists = os.path.isfile(CSV_FILE)
@@ -104,7 +100,7 @@ def atualizar_voo(id_voo: int, voo_atualizado: Voo):
             raise HTTPException(status_code=404, detail="Voo não encontrado.")
 
         with open(CSV_FILE, "w", newline="") as file:
-            writer = csv.DictWriter(file, fieldnames=HEADER)
+            writer = csv.DictWriter(file, fieldnames=header)
             writer.writeheader()
             writer.writerows(voos)
 
@@ -130,7 +126,7 @@ def deletar_voo(id_voo: int):
             raise HTTPException(status_code=404, detail="Voo não encontrado.")
 
         with open(CSV_FILE, "w", newline="") as file:
-            writer = csv.DictWriter(file, fieldnames=HEADER)
+            writer = csv.DictWriter(file, fieldnames=header)
             writer.writeheader()
             writer.writerows(voos)
 
@@ -151,4 +147,15 @@ def contar_registros():
         except Exception as e:
                 return {"error": f"Erro ao contar registros: {str(e)}"}
                 file.close()
-
+                
+# Funcionalidade 6
+@app.get("/hash/")
+def obter_hash():
+    try:
+        with open(CSV_FILE, "rb") as file:
+            sha256_hash = hashlib.sha256(file.read()).hexdigest()
+        return {"SHA256": sha256_hash}
+    except FileNotFoundError:
+        return {"error": "Arquivo CSV não encontrado."}
+    except Exception as e:
+        return {"error": f"Erro ao calcular hash: {str(e)}"}

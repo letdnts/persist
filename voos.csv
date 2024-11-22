@@ -1,4 +1,4 @@
-id_voo,numero_voo,cia,origem,destino,horario_partida,horario_chegada,id_aeronave,status
+id_voo ,numero_voo ,cia ,origem ,destino,horario_partida,horario_chegada,id_aeronave,status
 1,101,Azul,São Paulo,Rio de Janeiro,2024-11-22 08:00:00+00:00,2024-11-22 09:30:00+00:00,10,Pousado
 2,102,Gol,Brasília,Salvador,2024-11-22 12:00:00+00:00,2024-11-22 14:30:00+00:00,11,Em voo
 3,103,Latam,Recife,Fortaleza,2024-11-22 15:00:00+00:00,2024-11-22 16:15:00+00:00,12,Cancelado
