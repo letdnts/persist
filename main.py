@@ -69,25 +69,6 @@ def listar_voos():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao listar voos: {e}")
 
-# Funcionalidade 5: Compactar o arquivo CSV em um ZIP
-@app.get("/voos/compactar")
-def compactar_csv():
-    verificar_csv()
-    
-    zip_file = CSV_FILE.replace("voos.csv", "voos.zip")
-    
-    try:
-        with zipfile.ZipFile(zip_file, "w", zipfile.ZIP_DEFLATED) as zipf:
-            zipf.write(CSV_FILE, os.path.basename(CSV_FILE))
-
-        return FileResponse(
-            path=zip_file,
-            media_type="application/zip",
-            filename=os.path.basename(zip_file),
-        )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro ao compactar arquivo: {e}")
-
 # Funcionalidade 3: Obter um registro específico pelo ID
 @app.get("/voos/{id_voo}")
 def obter_voo(id_voo: int):
@@ -186,6 +167,26 @@ def contar_registros():
         return {"Total de Registros": count}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao contar registros: {e}")
+
+# Funcionalidade 5: Compactar o arquivo CSV em um ZIP
+@app.get("/voos/compactar")
+def compactar_csv():
+    verificar_csv()
+    
+    zip_file = CSV_FILE.replace("voos.csv", "voos.zip")
+    
+    try:
+        with zipfile.ZipFile(zip_file, "w", zipfile.ZIP_DEFLATED) as zipf:
+            zipf.write(CSV_FILE, os.path.basename(CSV_FILE))
+
+        return FileResponse(
+            path=zip_file,
+            media_type="application/zip",
+            filename=os.path.basename(zip_file),
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao compactar arquivo: {e}")
+
 
 # Funcionalidade 6: Retornar o hash SHA256 do arquivo CSV
 @app.get("/hash/")
