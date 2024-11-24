@@ -96,10 +96,12 @@ def obter_voo(id_voo: int):
         with open(CSV_FILE, "r") as file:
             reader = csv.DictReader(file)
             for row in reader:
+                print(f"Analisando linha: {row}")  # Adicionado para depuração
                 if int(row["id_voo"]) == id_voo:
                     return row
         raise HTTPException(status_code=404, detail="Voo não encontrado.")
     except Exception as e:
+        print(f"Erro ao buscar voo: {e}")  # Adicionado para depuração
         raise HTTPException(status_code=500, detail=f"Erro ao buscar voo: {e}")
 
 # Funcionalidade 3: Atualizar um registro específico pelo ID

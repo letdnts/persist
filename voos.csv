@@ -1,5 +1,4 @@
-id_voo ,numero_voo ,cia ,origem ,destino,horario_partida,horario_chegada,id_aeronave,status
-1,101,Azul,São Paulo,Rio de Janeiro,2024-11-22 08:00:00+00:00,2024-11-22 09:30:00+00:00,10,Pousado
+id_voo,numero_voo,cia,origem,destino,horario_partida,horario_chegada,id_aeronave,status
 2,102,Gol,Brasília,Salvador,2024-11-22 12:00:00+00:00,2024-11-22 14:30:00+00:00,11,Em voo
 3,103,Latam,Recife,Fortaleza,2024-11-22 15:00:00+00:00,2024-11-22 16:15:00+00:00,12,Cancelado
 4,104,Azul,Porto Alegre,Curitiba,2024-11-22 10:00:00+00:00,2024-11-22 11:20:00+00:00,13,No Horário
@@ -9,3 +8,4 @@ id_voo ,numero_voo ,cia ,origem ,destino,horario_partida,horario_chegada,id_aero
 8,108,Azul,Curitiba,Rio de Janeiro,2024-11-22 11:30:00+00:00,2024-11-22 13:10:00+00:00,17,Atrasado
 9,109,Latam,Fortaleza,São Paulo,2024-11-22 06:00:00+00:00,2024-11-22 09:00:00+00:00,18,Cancelado
 10,110,Gol,Rio de Janeiro,Brasília,2024-11-22 20:00:00+00:00,2024-11-22 22:10:00+00:00,19,Em voo
+1,101,Azul,São Paulo,Rio de Janeiro,2024-11-22T08:00:00+00:00,2024-11-22T09:30:00+00:00,10,Pousado
